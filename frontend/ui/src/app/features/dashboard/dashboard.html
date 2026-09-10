@@ -1,0 +1,396 @@
+<div class="dashboard-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Dashboard</h1>
+      <p>Gurusatwik Hostel Management</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-btn"
+      (click)="loadDashboard()"
+      [disabled]="loading">
+
+      <span *ngIf="!loading">↻</span>
+      <span *ngIf="loading">⟳</span>
+
+      {{ loading ? 'Loading...' : 'Refresh' }}
+
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="loading-container">
+
+    <div class="loader"></div>
+    <span>Loading dashboard...</span>
+
+  </div>
+
+
+  <!-- Error -->
+  <div
+    *ngIf="!loading && errorMessage"
+    class="error-container">
+
+    <div class="error-icon">!</div>
+
+    <div>
+      <strong>Unable to load dashboard</strong>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <button
+      type="button"
+      (click)="loadDashboard()">
+      Retry
+    </button>
+
+  </div>
+
+
+  <!-- Dashboard -->
+  <ng-container *ngIf="!loading && dashboard">
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+
+      <!-- Students -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Total Students
+          </div>
+
+          <div class="stat-value">
+            {{ dashboard.total_students }}
+          </div>
+
+          <div class="stat-description">
+            Active students
+          </div>
+
+        </div>
+
+        <div class="stat-icon students-icon">
+          👨‍🎓
+        </div>
+
+      </div>
+
+
+      <!-- Rooms -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Total Rooms
+          </div>
+
+          <div class="stat-value">
+            {{ dashboard.total_rooms }}
+          </div>
+
+          <div class="stat-description">
+            Active rooms
+          </div>
+
+        </div>
+
+        <div class="stat-icon rooms-icon">
+          🏠
+        </div>
+
+      </div>
+
+
+      <!-- Beds -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Total Beds
+          </div>
+
+          <div class="stat-value">
+            {{ dashboard.total_beds }}
+          </div>
+
+          <div class="stat-description">
+            Usable beds
+          </div>
+
+        </div>
+
+        <div class="stat-icon beds-icon">
+          🛏
+        </div>
+
+      </div>
+
+
+      <!-- Occupied -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Occupied Beds
+          </div>
+
+          <div class="stat-value">
+            {{ dashboard.occupied_beds }}
+          </div>
+
+          <div class="stat-description">
+            Currently occupied
+          </div>
+
+        </div>
+
+        <div class="stat-icon occupied-icon">
+          👤
+        </div>
+
+      </div>
+
+
+      <!-- Available -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Available Beds
+          </div>
+
+          <div class="stat-value">
+            {{ dashboard.available_beds }}
+          </div>
+
+          <div class="stat-description">
+            Beds available
+          </div>
+
+        </div>
+
+        <div class="stat-icon available-icon">
+          ✓
+        </div>
+
+      </div>
+
+
+      <!-- Current Month Fee -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Current Month Fee
+          </div>
+
+          <div class="stat-value money">
+            ₹{{ dashboard.current_month_fee | number:'1.0-0' }}
+          </div>
+
+          <div class="stat-description">
+            Total fee generated
+          </div>
+
+        </div>
+
+        <div class="stat-icon fee-icon">
+          ₹
+        </div>
+
+      </div>
+
+
+      <!-- Collection -->
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Current Month Collection
+          </div>
+
+          <div class="stat-value money">
+            ₹{{ dashboard.current_month_collection | number:'1.0-0' }}
+          </div>
+
+          <div class="stat-description">
+            Amount collected
+          </div>
+
+        </div>
+
+        <div class="stat-icon collection-icon">
+          💰
+        </div>
+
+      </div>
+
+
+      <!-- Pending -->
+      <div class="stat-card pending-card">
+
+        <div class="stat-content">
+
+          <div class="stat-label">
+            Total Pending Fees
+          </div>
+
+          <div class="stat-value money">
+            ₹{{ dashboard.total_pending_fees | number:'1.0-0' }}
+          </div>
+
+          <div class="stat-description">
+            Outstanding amount
+          </div>
+
+        </div>
+
+        <div class="stat-icon pending-icon">
+          ⚠
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Bottom section -->
+    <div class="dashboard-bottom">
+
+      <!-- Occupancy -->
+      <div class="dashboard-panel">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>Bed Occupancy</h2>
+            <p>Current hostel occupancy</p>
+          </div>
+
+        </div>
+
+        <div class="occupancy-section">
+
+          <div class="occupancy-numbers">
+
+            <div>
+              <span class="occupancy-value">
+                {{ dashboard.occupied_beds }}
+              </span>
+
+              <span class="occupancy-label">
+                Occupied
+              </span>
+            </div>
+
+            <div>
+              <span class="occupancy-value">
+                {{ dashboard.available_beds }}
+              </span>
+
+              <span class="occupancy-label">
+                Available
+              </span>
+            </div>
+
+          </div>
+
+          <div class="progress-bar">
+
+            <div
+              class="progress-value"
+              [style.width.%]="
+                dashboard.total_beds > 0
+                  ? (dashboard.occupied_beds / dashboard.total_beds) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <div class="occupancy-percentage">
+
+            {{
+              dashboard.total_beds > 0
+                ? ((dashboard.occupied_beds / dashboard.total_beds) * 100 | number:'1.0-1')
+                : 0
+            }}% occupied
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Fee summary -->
+      <div class="dashboard-panel">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>Fee Summary</h2>
+            <p>Current month financial overview</p>
+          </div>
+
+        </div>
+
+        <div class="fee-summary">
+
+          <div class="fee-row">
+
+            <span>Generated</span>
+
+            <strong>
+              ₹{{ dashboard.current_month_fee | number:'1.0-0' }}
+            </strong>
+
+          </div>
+
+          <div class="fee-row">
+
+            <span>Collected</span>
+
+            <strong>
+              ₹{{ dashboard.current_month_collection | number:'1.0-0' }}
+            </strong>
+
+          </div>
+
+          <div class="fee-row pending-row">
+
+            <span>Pending</span>
+
+            <strong>
+              ₹{{ dashboard.total_pending_fees | number:'1.0-0' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

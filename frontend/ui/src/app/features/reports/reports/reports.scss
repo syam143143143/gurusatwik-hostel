@@ -1,0 +1,351 @@
+.reports-page {
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: #f6f7fb;
+}
+ .mini-summary{
+    padding: 10px;
+  }
+
+  .mini-summary-item{
+        padding: 10px;
+
+  }
+/* Header */
+
+.page-header {
+  margin-bottom: 22px;
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: #7b8190;
+  margin-bottom: 7px;
+
+  span {
+    margin: 0 7px;
+  }
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #1f2937;
+}
+
+.page-header p {
+  margin: 7px 0 0;
+  color: #6b7280;
+}
+
+
+/* Tabs */
+
+.report-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.report-tabs button {
+  border: 1px solid #e1e5eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.report-tabs button:hover {
+  background: #f8fafc;
+}
+
+.report-tabs button.active {
+  background: #1f2937;
+  color: #fff;
+  border-color: #1f2937;
+}
+
+
+/* Card */
+
+.report-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.report-card-header {
+  padding: 20px 22px;
+  border-bottom: 1px solid #edf0f3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.report-card-header h2 {
+  margin: 0;
+  font-size: 19px;
+  color: #1f2937;
+}
+
+.report-card-header p {
+  margin: 5px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+
+/* Stat */
+
+.report-stat {
+  text-align: right;
+}
+
+.report-stat strong {
+  display: block;
+  font-size: 23px;
+  color: #111827;
+}
+
+.report-stat span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.report-stat.danger strong {
+  color: #dc2626;
+}
+
+
+/* Filters */
+
+.filters {
+  padding: 16px 22px;
+  background: #fafbfc;
+  border-bottom: 1px solid #edf0f3;
+
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.filter-field input,
+.filter-field select {
+  height: 38px;
+  min-width: 150px;
+  padding: 0 10px;
+  border: 1px solid #d7dce2;
+  border-radius: 7px;
+  background: #fff;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: #64748b;
+}
+
+
+/* Buttons */
+
+.btn-primary,
+.btn-secondary {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: #1f2937;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #374151;
+  border-color: #d7dce2;
+}
+
+
+/* Table */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+
+thead {
+  background: #f8fafc;
+}
+
+th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  border-top: 1px solid #edf0f3;
+  font-size: 13px;
+  color: #374151;
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+td strong {
+  display: block;
+  color: #1f2937;
+}
+
+td small {
+  display: block;
+  margin-top: 3px;
+  color: #7b8190;
+  font-size: 11px;
+}
+
+
+/* Status */
+
+.status {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.status.available {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status.partial {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.status.full {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.status.pending {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.pending-amount {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+
+/* States */
+
+.empty {
+  text-align: center;
+  padding: 40px !important;
+  color: #9ca3af;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.error-message {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .reports-page {
+    padding: 15px;
+  }
+
+  .page-header h1 {
+    font-size: 23px;
+  }
+
+  .report-tabs {
+    gap: 7px;
+  }
+
+  .report-tabs button {
+    padding: 10px 13px;
+  }
+
+  .report-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .report-stat {
+    text-align: left;
+  }
+
+  .filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filter-field input,
+  .filter-field select,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+ 
+}

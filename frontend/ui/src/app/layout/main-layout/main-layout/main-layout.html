@@ -1,0 +1,423 @@
+<div class="app-shell">
+
+  <!-- ================= HEADER ================= -->
+  <header class="top-header">
+
+    <!-- Left -->
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="menu-button"
+        (click)="toggleSidebar()"
+        aria-label="Toggle menu">
+        ☰
+      </button>
+
+      <div class="brand-mobile">
+        <div class="brand-icon">
+          🏠
+        </div>
+
+        <div>
+          <div class="brand-name">
+            Gurusatwik
+          </div>
+
+          <div class="brand-subtitle">
+            Hostel Management
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right -->
+    <div class="header-right">
+
+      <div class="welcome-text">
+        <span>Welcome,</span>
+        <strong>
+          {{ currentUser?.full_name || 'User' }}
+        </strong>
+      </div>
+
+      <div class="user-profile">
+
+        <div class="avatar">
+          {{ getUserInitials() }}
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-name">
+            {{ currentUser?.full_name || 'User' }}
+          </div>
+
+          <div class="user-role">
+            {{ getRoleLabel() }}
+          </div>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="logout-header-button"
+        (click)="openLogoutModal()">
+
+        <span class="logout-icon">↪</span>
+
+        <span>Logout</span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= BODY ================= -->
+  <div class="app-body">
+
+    <!-- Mobile overlay -->
+    <div
+      class="sidebar-overlay"
+      *ngIf="sidebarOpen"
+      (click)="closeMobileSidebar()">
+    </div>
+
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside
+      class="sidebar"
+      [class.sidebar-collapsed]="!sidebarOpen">
+
+      <!-- Sidebar Brand -->
+      <div class="sidebar-brand">
+
+        <div class="brand-icon-large">
+          🏠
+        </div>
+
+        <div
+          class="sidebar-brand-text"
+          *ngIf="sidebarOpen">
+
+          <div class="sidebar-title">
+            Gurusatwik
+          </div>
+
+          <div class="sidebar-subtitle">
+            Hostel Management
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Navigation -->
+      <nav class="navigation">
+
+        <div
+          class="nav-section-title"
+          *ngIf="sidebarOpen">
+          MAIN MENU
+        </div>
+
+
+        <!-- Dashboard -->
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+
+          <span class="nav-icon">▣</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Dashboard
+          </span>
+
+        </a>
+
+
+        <!-- Students -->
+        <a
+          routerLink="/students"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">♙</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Students
+          </span>
+
+        </a>
+
+
+        <!-- Rooms -->
+        <a
+          routerLink="/rooms"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">⌂</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Rooms
+          </span>
+
+        </a>
+
+
+        <!-- Allocation -->
+        <a
+          routerLink="/allocation"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">⇄</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Room Allocation
+          </span>
+
+        </a>
+
+
+        <div
+          class="nav-section-title"
+          *ngIf="sidebarOpen">
+          FINANCE
+        </div>
+
+
+        <!-- Fees -->
+        <a
+          routerLink="/fees"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">₹</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Fees
+          </span>
+
+        </a>
+
+
+        <!-- Payments -->
+        <a
+          routerLink="/payments"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">▤</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Payments
+          </span>
+
+        </a>
+
+
+        <div
+          class="nav-section-title"
+          *ngIf="sidebarOpen">
+          MANAGEMENT
+        </div>
+
+
+        <!-- Attendance -->
+        <a
+          routerLink="/attendance"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">✓</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Attendance
+          </span>
+
+        </a>
+
+
+        <!-- Complaints -->
+        <a
+          routerLink="/complaints"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">⚠</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Complaints
+          </span>
+
+        </a>
+
+
+        <!-- Reports -->
+        <a
+          routerLink="/reports"
+          routerLinkActive="active"
+          class="nav-item">
+
+          <span class="nav-icon">▥</span>
+
+          <span
+            class="nav-label"
+            *ngIf="sidebarOpen">
+            Reports
+          </span>
+
+        </a>
+
+      </nav>
+
+
+      <!-- Sidebar Bottom -->
+      <div class="sidebar-bottom">
+
+        <div
+          class="sidebar-user"
+          *ngIf="sidebarOpen">
+
+          <div class="sidebar-avatar">
+            {{ getUserInitials() }}
+          </div>
+
+          <div class="sidebar-user-details">
+
+            <div class="sidebar-user-name">
+              {{ currentUser?.full_name || 'User' }}
+            </div>
+
+            <div class="sidebar-user-role">
+              {{ getRoleLabel() }}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="sidebar-logout"
+          (click)="openLogoutModal()">
+
+          <span>↪</span>
+
+          <span *ngIf="sidebarOpen">
+            Logout
+          </span>
+
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================= CONTENT ================= -->
+    <main
+      class="main-content"
+      [class.content-expanded]="!sidebarOpen">
+
+      <div class="page-container">
+
+        <router-outlet></router-outlet>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="app-footer">
+
+    <div>
+      © {{ currentYear || 2026 }} Gurusatwik Hostel Management
+    </div>
+
+    <div class="footer-right">
+      Hostel Administration System
+    </div>
+
+  </footer>
+
+
+  <!-- ================= LOGOUT MODAL ================= -->
+  <div
+    class="logout-modal-backdrop"
+    *ngIf="showLogoutModal"
+    (click)="closeLogoutModal()">
+
+    <div
+      class="logout-modal"
+      (click)="$event.stopPropagation()">
+
+      <div class="logout-modal-icon">
+        ↪
+      </div>
+
+      <h3>
+        Logout Confirmation
+      </h3>
+
+      <p>
+        Are you sure you want to logout from Gurusatwik Hostel Management?
+      </p>
+
+      <div class="logout-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeLogoutModal()">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="button"
+          class="confirm-logout-button"
+          (click)="confirmLogout()">
+
+          Logout
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

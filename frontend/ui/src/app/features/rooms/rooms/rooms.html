@@ -1,0 +1,341 @@
+<div class="rooms-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Rooms</h1>
+
+      <p>
+        Manage hostel rooms and bed availability
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="refresh()">
+
+      ↻ Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🏢
+      </div>
+
+      <div>
+        <span>Total Rooms</span>
+        <strong>{{ totalRooms }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🛏
+      </div>
+
+      <div>
+        <span>Total Beds</span>
+        <strong>{{ totalBeds }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        👤
+      </div>
+
+      <div>
+        <span>Occupied Beds</span>
+        <strong>{{ occupiedBeds }}</strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ✓
+      </div>
+
+      <div>
+        <span>Available Beds</span>
+        <strong>{{ availableBeds }}</strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Filters -->
+  <div class="filter-card">
+
+    <div class="filter-group">
+
+      <label>Search Room</label>
+
+      <input
+        type="text"
+        placeholder="Search room number..."
+        [value]="searchText"
+        (input)="onSearch($event)"
+      />
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>Floor</label>
+
+      <select
+        [value]="selectedFloor"
+        (change)="onFloorChange($event)">
+
+        <option value="ALL">
+          All Floors
+        </option>
+
+        <option value="1">Floor 1</option>
+        <option value="2">Floor 2</option>
+        <option value="3">Floor 3</option>
+        <option value="4">Floor 4</option>
+        <option value="5">Floor 5</option>
+        <option value="6">Floor 6</option>
+
+      </select>
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>Sharing</label>
+
+      <select
+        [value]="selectedSharing"
+        (change)="onSharingChange($event)">
+
+        <option value="ALL">
+          All Sharing
+        </option>
+
+        <option value="2 Sharing">
+          2 Sharing
+        </option>
+
+        <option value="3 Sharing">
+          3 Sharing
+        </option>
+
+        <option value="4 Sharing">
+          4 Sharing
+        </option>
+
+        <option value="5 Sharing">
+          5 Sharing
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    class="state-container"
+    *ngIf="loading">
+
+    <div class="loader"></div>
+
+    <p>Loading rooms...</p>
+
+  </div>
+
+
+  <!-- Error -->
+  <div
+    class="error-container"
+    *ngIf="!loading && errorMessage">
+
+    <strong>
+      Unable to load rooms
+    </strong>
+
+    <p>
+      {{ errorMessage }}
+    </p>
+
+    <button
+      type="button"
+      (click)="loadRooms()">
+
+      Try Again
+
+    </button>
+
+  </div>
+
+
+  <!-- Room Table -->
+  <div
+    class="table-card"
+    *ngIf="!loading && !errorMessage">
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>Room List</h2>
+
+        <span>
+          {{ filteredRooms.length }} rooms
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Room</th>
+
+            <th>Floor</th>
+
+            <th>Sharing</th>
+
+            <th>Capacity</th>
+
+            <th>Occupied</th>
+
+            <th>Available</th>
+
+            <th>Monthly Fee</th>
+
+            <th>Status</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr *ngFor="let room of filteredRooms">
+
+            <td>
+
+              <div class="room-number">
+                {{ room.room_number }}
+              </div>
+
+            </td>
+
+
+            <td>
+              Floor {{ room.floor_number }}
+            </td>
+
+
+            <td>
+
+              <span class="sharing-badge">
+                {{ room.sharing_name }}
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ room.capacity }}
+            </td>
+
+
+            <td>
+
+              <span class="occupied-count">
+                {{ room.occupied_beds }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <span class="available-count">
+                {{ room.available_beds }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              ₹{{ room.monthly_fee | number:'1.0-0' }}
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="getRoomStatusClass(room.room_status)">
+
+                {{ room.room_status }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+
+          <tr
+            *ngIf="filteredRooms.length === 0">
+
+            <td
+              colspan="8"
+              class="empty-row">
+
+              No rooms found
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

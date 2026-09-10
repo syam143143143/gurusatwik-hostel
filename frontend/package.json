@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@angular/common": "^20.3.30",
+    "@angular/core": "^20.3.30",
+    "@angular/platform-browser": "^20.3.30",
+    "@angular/router": "^20.3.30"
+  }
+}

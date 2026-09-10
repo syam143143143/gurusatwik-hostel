@@ -1,0 +1,68 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>Gurusatwik</h1>
+      <p>Hostel Management System</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Enter username"
+          autocomplete="username"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div
+        class="error-message"
+        *ngIf="errorMessage"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+      >
+        <span *ngIf="!loading">
+          Login
+        </span>
+
+        <span *ngIf="loading">
+          Logging in...
+        </span>
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

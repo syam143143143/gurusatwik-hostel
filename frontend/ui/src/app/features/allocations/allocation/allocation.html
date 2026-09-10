@@ -1,0 +1,642 @@
+<div class="allocation-page">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        Hostel Management
+        <span>/</span>
+        Room Allocation
+      </div>
+
+      <h1>Room Allocation</h1>
+
+      <p>
+        Assign students to available rooms and beds.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="refresh()">
+
+      <span>↻</span>
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       MESSAGES
+  ========================== -->
+
+  <div
+    class="message success"
+    *ngIf="successMessage">
+
+    <span>✓</span>
+
+    {{ successMessage }}
+
+    <button
+      type="button"
+      (click)="successMessage = ''">
+
+      ×
+
+    </button>
+
+  </div>
+
+
+  <div
+    class="message error"
+    *ngIf="errorMessage">
+
+    <span>!</span>
+
+    {{ errorMessage }}
+
+    <button
+      type="button"
+      (click)="errorMessage = ''">
+
+      ×
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       SUMMARY CARDS
+  ========================== -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        👨‍🎓
+      </div>
+
+      <div>
+
+        <span class="summary-label">
+          Active Allocations
+        </span>
+
+        <strong>
+          {{ totalAllocations }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🛏️
+      </div>
+
+      <div>
+
+        <span class="summary-label">
+          Available Beds
+        </span>
+
+        <strong>
+          {{ totalAvailableBeds }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ADD ALLOCATION
+  ========================== -->
+
+  <section class="form-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h2>
+          Add Room Allocation
+        </h2>
+
+        <p>
+          Select a student and assign an available bed.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-body">
+
+      <!-- Student -->
+
+      <div class="form-group">
+
+        <label>
+          Student
+          <span>*</span>
+        </label>
+
+        <select
+          [(ngModel)]="selectedStudentId"
+          [disabled]="studentsLoading || saving">
+
+          <option [ngValue]="null">
+            Select Student
+          </option>
+
+          <option
+            *ngFor="let student of students"
+            [ngValue]="student.student_id">
+
+            {{ student.student_code }}
+            -
+            {{ student.first_name }}
+            {{ student.last_name }}
+
+          </option>
+
+        </select>
+
+        <small
+          *ngIf="studentsLoading">
+
+          Loading students...
+
+        </small>
+
+        <small
+          class="empty-message"
+          *ngIf="
+            !studentsLoading &&
+            students.length === 0
+          ">
+
+          No active students available.
+
+        </small>
+
+      </div>
+
+
+      <!-- Room / Bed -->
+
+      <div class="form-group">
+
+        <label>
+          Room / Bed
+          <span>*</span>
+        </label>
+
+        <select
+          [(ngModel)]="selectedBedId"
+          [disabled]="bedsLoading || saving">
+
+          <option [ngValue]="null">
+            Select Available Room / Bed
+          </option>
+
+          <option
+            *ngFor="let bed of availableBeds"
+            [ngValue]="bed.bed_id">
+
+            Room {{ bed.room_number }}
+            -
+            {{ bed.bed_label }}
+
+            |
+            Floor {{ bed.floor_number }}
+
+            |
+            {{ bed.sharing_name }}
+
+            |
+            ₹{{ bed.monthly_fee | number }}
+
+          </option>
+
+        </select>
+
+        <small
+          *ngIf="bedsLoading">
+
+          Loading available beds...
+
+        </small>
+
+        <small
+          class="empty-message"
+          *ngIf="
+            !bedsLoading &&
+            availableBeds.length === 0
+          ">
+
+          No available beds.
+
+        </small>
+
+      </div>
+
+
+      <!-- Allocation Date -->
+
+      <div class="form-group">
+
+        <label>
+          Allocation Date
+          <span>*</span>
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="allocationDate"
+          [disabled]="saving">
+
+      </div>
+
+
+      <!-- Remarks -->
+
+      <div class="form-group full-width">
+
+        <label>
+          Remarks
+        </label>
+
+        <textarea
+          rows="3"
+          [(ngModel)]="remarks"
+          [disabled]="saving"
+          placeholder="Enter remarks if required">
+        </textarea>
+
+      </div>
+
+
+      <!-- Selected Details -->
+
+      <div
+        class="selection-preview"
+        *ngIf="
+          selectedStudentId &&
+          selectedBedId
+        ">
+
+        <div class="preview-title">
+          Allocation Summary
+        </div>
+
+        <div class="preview-grid">
+
+          <div>
+
+            <span>
+              Student
+            </span>
+
+            <strong>
+              {{ getSelectedStudent()?.student_code }}
+              -
+              {{ getSelectedStudent()?.first_name }}
+              {{ getSelectedStudent()?.last_name }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Room
+            </span>
+
+            <strong>
+              {{ getSelectedBed()?.room_number }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Bed
+            </span>
+
+            <strong>
+              {{ getSelectedBed()?.bed_label }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Monthly Fee
+            </span>
+
+            <strong>
+              ₹{{ getSelectedBed()?.monthly_fee | number }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Buttons -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="resetForm()"
+          [disabled]="saving">
+
+          Clear
+
+        </button>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="allocateStudent()"
+          [disabled]="saving">
+
+          <span *ngIf="!saving">
+            Allocate Student
+          </span>
+
+          <span *ngIf="saving">
+            Allocating...
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ACTIVE ALLOCATIONS
+  ========================== -->
+
+  <section class="table-card">
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>
+          Active Room Allocations
+        </h2>
+
+        <p>
+          Students currently staying in the hostel.
+        </p>
+
+      </div>
+
+
+      <div class="search-box">
+
+        <span>
+          🔍
+        </span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search student, room or bed">
+
+      </div>
+
+    </div>
+
+
+    <!-- Loading -->
+
+    <div
+      class="loading-state"
+      *ngIf="loading">
+
+      <div class="loader"></div>
+
+      <p>
+        Loading allocations...
+      </p>
+
+    </div>
+
+
+    <!-- Empty -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        filteredAllocations.length === 0
+      ">
+
+      <div class="empty-icon">
+        🛏️
+      </div>
+
+      <h3>
+        No active allocations
+      </h3>
+
+      <p>
+        Allocate a student to an available bed.
+      </p>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !loading &&
+        filteredAllocations.length > 0
+      ">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Room
+            </th>
+
+            <th>
+              Bed
+            </th>
+
+            <th>
+              Floor
+            </th>
+
+            <th>
+              Sharing
+            </th>
+
+            <th>
+              Monthly Fee
+            </th>
+
+            <th>
+              Allocation Date
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let allocation
+              of filteredAllocations
+            ">
+
+            <td>
+
+              <div class="student-cell">
+
+                <strong>
+                  {{ allocation.student_code }}
+                </strong>
+
+                <span>
+                  {{ allocation.student_name }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <strong>
+                {{ allocation.room_number }}
+              </strong>
+
+            </td>
+
+
+            <td>
+
+              {{ allocation.bed_label }}
+
+            </td>
+
+
+            <td>
+
+              Floor {{ allocation.floor_number }}
+
+            </td>
+
+
+            <td>
+
+              {{ allocation.sharing_name }}
+
+            </td>
+
+
+            <td>
+
+              ₹{{ allocation.monthly_fee | number }}
+
+            </td>
+
+
+            <td>
+
+              {{ allocation.allocation_date | date:'dd-MM-yyyy' }}
+
+            </td>
+
+
+            <td>
+
+              <span class="status active">
+                ACTIVE
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <button
+                type="button"
+                class="vacate-button"
+                (click)="vacateAllocation(allocation)">
+
+                Vacate
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</div>

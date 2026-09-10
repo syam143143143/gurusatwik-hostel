@@ -1,0 +1,1174 @@
+<div class="reports-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        Hostel Management
+        <span>/</span>
+        Reports
+      </div>
+
+      <h1>Reports</h1>
+
+      <p>
+        View occupancy, fees, collections and payment reports.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       REPORT TABS
+  ====================================================== -->
+
+  <div class="report-tabs">
+
+    <!-- Occupancy -->
+
+    <button
+      type="button"
+      [class.active]="activeReport === 'occupancy'"
+      (click)="selectReport('occupancy')">
+
+      <span class="tab-icon">🏠</span>
+
+      <span>
+        Occupancy
+      </span>
+
+    </button>
+
+
+    <!-- Monthly Collection -->
+
+    <button
+      type="button"
+      [class.active]="activeReport === 'collection'"
+      (click)="selectReport('collection')">
+
+      <span class="tab-icon">₹</span>
+
+      <span>
+        Monthly Collection
+      </span>
+
+    </button>
+
+
+    <!-- Pending Fees -->
+
+    <button
+      type="button"
+      [class.active]="activeReport === 'pending'"
+      (click)="selectReport('pending')">
+
+      <span class="tab-icon">⚠</span>
+
+      <span>
+        Pending Fees
+      </span>
+
+    </button>
+
+
+    <!-- Payment Report -->
+
+    <button
+      type="button"
+      [class.active]="activeReport === 'payments'"
+      (click)="selectReport('payments')">
+
+      <span class="tab-icon">💳</span>
+
+      <span>
+        Payment Report
+      </span>
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       ERROR
+  ====================================================== -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
+
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    <div class="loading-spinner"></div>
+
+    <span>
+      Loading report...
+    </span>
+
+  </div>
+
+
+  <!-- =====================================================
+       OCCUPANCY REPORT
+  ====================================================== -->
+
+  <div
+    class="report-card"
+    *ngIf="!loading && activeReport === 'occupancy'">
+
+    <!-- Header -->
+
+    <div class="report-card-header">
+
+      <div>
+
+        <h2>
+          Occupancy Report
+        </h2>
+
+        <p>
+          Current room and bed occupancy details.
+        </p>
+
+      </div>
+
+
+      <!-- Occupancy Percentage -->
+
+      <div class="report-stat">
+
+        <strong>
+          {{ occupancyPercentage }}%
+        </strong>
+
+        <span>
+          Overall Occupancy
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OCCUPANCY SUMMARY
+    ====================================================== -->
+
+    <div class="mini-summary">
+
+      <!-- Total Rooms -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Total Rooms
+        </span>
+
+        <strong>
+          {{ totalRooms }}
+        </strong>
+
+      </div>
+
+
+      <!-- Total Capacity -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Total Capacity
+        </span>
+
+        <strong>
+          {{ totalCapacity }}
+        </strong>
+
+      </div>
+
+
+      <!-- Occupied Beds -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Occupied Beds
+        </span>
+
+        <strong>
+          {{ totalOccupiedBeds }}
+        </strong>
+
+      </div>
+
+
+      <!-- Available Beds -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Available Beds
+        </span>
+
+        <strong>
+          {{ totalAvailableBeds }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OCCUPANCY TABLE
+    ====================================================== -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Floor
+            </th>
+
+            <th>
+              Room
+            </th>
+
+            <th>
+              Sharing
+            </th>
+
+            <th>
+              Capacity
+            </th>
+
+            <th>
+              Occupied
+            </th>
+
+            <th>
+              Available
+            </th>
+
+            <th>
+              Monthly Fee
+            </th>
+
+            <th>
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let room of occupancyData">
+
+            <!-- Floor -->
+
+            <td>
+              Floor {{ room.floor_number }}
+            </td>
+
+
+            <!-- Room -->
+
+            <td>
+
+              <strong>
+                {{ room.room_number }}
+              </strong>
+
+            </td>
+
+
+            <!-- Sharing -->
+
+            <td>
+              {{ room.sharing_name }}
+            </td>
+
+
+            <!-- Capacity -->
+
+            <td>
+              {{ room.capacity }}
+            </td>
+
+
+            <!-- Occupied -->
+
+            <td>
+
+              <span class="number-badge occupied">
+                {{ room.occupied_beds }}
+              </span>
+
+            </td>
+
+
+            <!-- Available -->
+
+            <td>
+
+              <span class="number-badge available">
+                {{ room.available_beds }}
+              </span>
+
+            </td>
+
+
+            <!-- Monthly Fee -->
+
+            <td>
+
+              ₹{{ formatAmount(room.monthly_fee) }}
+
+            </td>
+
+
+            <!-- Status -->
+
+            <td>
+
+              <span
+                class="status"
+                [ngClass]="getRoomStatusClass(room.room_status)">
+
+                {{ room.room_status }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+
+          <!-- Empty -->
+
+          <tr
+            *ngIf="occupancyData.length === 0">
+
+            <td
+              colspan="8"
+              class="empty">
+
+              No occupancy records found.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MONTHLY COLLECTION REPORT
+  ====================================================== -->
+
+  <div
+    class="report-card"
+    *ngIf="!loading && activeReport === 'collection'">
+
+    <!-- Header -->
+
+    <div class="report-card-header">
+
+      <div>
+
+        <h2>
+          Monthly Collection
+        </h2>
+
+        <p>
+          Fee collections received during the selected period.
+        </p>
+
+      </div>
+
+
+      <!-- Total -->
+
+      <div class="report-stat">
+
+        <strong>
+          ₹{{ formatAmount(totalCollection) }}
+        </strong>
+
+        <span>
+          Total Collection
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="filters">
+
+      <!-- From Date -->
+
+      <div class="filter-field">
+
+        <label>
+          From Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="fromDate">
+
+      </div>
+
+
+      <!-- To Date -->
+
+      <div class="filter-field">
+
+        <label>
+          To Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="toDate">
+
+      </div>
+
+
+      <!-- Apply -->
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="applyDateFilter()">
+
+        Apply
+
+      </button>
+
+
+      <!-- Clear -->
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="clearFilters()">
+
+        Clear
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         COLLECTION TABLE
+    ====================================================== -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Receipt
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Amount
+            </th>
+
+            <th>
+              Mode
+            </th>
+
+            <th>
+              Reference
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let row of collectionData">
+
+            <!-- Date -->
+
+            <td>
+              {{ formatDate(row.payment_date) }}
+            </td>
+
+
+            <!-- Receipt -->
+
+            <td>
+
+              <span class="receipt-number">
+
+                {{ row.receipt_number || '-' }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Student -->
+
+            <td>
+
+              <strong>
+                {{ row.student_code }}
+              </strong>
+
+              <small>
+                {{ row.student_name }}
+              </small>
+
+            </td>
+
+
+            <!-- Amount -->
+
+            <td>
+
+              <strong class="amount">
+
+                ₹{{ formatAmount(row.amount) }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- Mode -->
+
+            <td>
+
+              <span
+                class="payment-mode"
+                [ngClass]="getPaymentModeClass(row.payment_mode)">
+
+                {{ row.payment_mode }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Reference -->
+
+            <td>
+
+              {{ row.reference_number || '-' }}
+
+            </td>
+
+          </tr>
+
+
+          <!-- Empty -->
+
+          <tr
+            *ngIf="collectionData.length === 0">
+
+            <td
+              colspan="6"
+              class="empty">
+
+              No collection records found.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PENDING FEES REPORT
+  ====================================================== -->
+
+  <div
+    class="report-card"
+    *ngIf="!loading && activeReport === 'pending'">
+
+    <!-- Header -->
+
+    <div class="report-card-header">
+
+      <div>
+
+        <h2>
+          Pending Fees
+        </h2>
+
+        <p>
+          Students with outstanding fee amounts.
+        </p>
+
+      </div>
+
+
+      <!-- Total Pending -->
+
+      <div class="report-stat danger">
+
+        <strong>
+          ₹{{ formatAmount(totalPending) }}
+        </strong>
+
+        <span>
+          Total Pending
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PENDING SUMMARY
+    ====================================================== -->
+
+    <div class="mini-summary">
+
+      <!-- Pending Records -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Pending Records
+        </span>
+
+        <strong>
+          {{ pendingData.length }}
+        </strong>
+
+      </div>
+
+
+      <!-- Students -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Students
+        </span>
+
+        <strong>
+          {{ uniquePendingStudents }}
+        </strong>
+
+      </div>
+
+
+      <!-- Total Pending -->
+
+      <div class="mini-summary-item">
+
+        <span class="mini-label">
+          Total Pending
+        </span>
+
+        <strong class="danger-text">
+          ₹{{ formatAmount(totalPending) }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PENDING TABLE
+    ====================================================== -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Month
+            </th>
+
+            <th>
+              Total
+            </th>
+
+            <th>
+              Paid
+            </th>
+
+            <th>
+              Pending
+            </th>
+
+            <th>
+              Due Date
+            </th>
+
+            <th>
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let row of pendingData">
+
+            <!-- Student -->
+
+            <td>
+
+              <strong>
+                {{ row.student_code }}
+              </strong>
+
+              <small>
+                {{ row.student_name }}
+              </small>
+
+            </td>
+
+
+            <!-- Month -->
+
+            <td>
+              {{ formatMonth(row.fee_month) }}
+            </td>
+
+
+            <!-- Total -->
+
+            <td>
+              ₹{{ formatAmount(row.total_amount) }}
+            </td>
+
+
+            <!-- Paid -->
+
+            <td>
+              ₹{{ formatAmount(row.paid_amount) }}
+            </td>
+
+
+            <!-- Pending -->
+
+            <td>
+
+              <strong class="pending-amount">
+
+                ₹{{ formatAmount(row.pending_amount) }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- Due Date -->
+
+            <td>
+              {{ formatDate(row.due_date) }}
+            </td>
+
+
+            <!-- Status -->
+
+            <td>
+
+              <span
+                class="status pending">
+
+                {{ row.status }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+
+          <!-- Empty -->
+
+          <tr
+            *ngIf="pendingData.length === 0">
+
+            <td
+              colspan="7"
+              class="empty">
+
+              No pending fees found.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PAYMENT REPORT
+  ====================================================== -->
+
+  <div
+    class="report-card"
+    *ngIf="!loading && activeReport === 'payments'">
+
+    <!-- Header -->
+
+    <div class="report-card-header">
+
+      <div>
+
+        <h2>
+          Payment Report
+        </h2>
+
+        <p>
+          Detailed payment transaction report.
+        </p>
+
+      </div>
+
+
+      <!-- Total Payments -->
+
+      <div class="report-stat">
+
+        <strong>
+          ₹{{ formatAmount(totalPayments) }}
+        </strong>
+
+        <span>
+          Total Payments
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAYMENT FILTERS
+    ====================================================== -->
+
+    <div class="filters">
+
+      <!-- From Date -->
+
+      <div class="filter-field">
+
+        <label>
+          From Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="fromDate">
+
+      </div>
+
+
+      <!-- To Date -->
+
+      <div class="filter-field">
+
+        <label>
+          To Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="toDate">
+
+      </div>
+
+
+      <!-- Payment Mode -->
+
+      <div class="filter-field">
+
+        <label>
+          Payment Mode
+        </label>
+
+        <select
+          [(ngModel)]="paymentMode">
+
+          <option value="ALL">
+            All
+          </option>
+
+          <option value="CASH">
+            Cash
+          </option>
+
+          <option value="UPI">
+            UPI
+          </option>
+
+          <option value="BANK">
+            Bank
+          </option>
+
+          <option value="CARD">
+            Card
+          </option>
+
+          <option value="OTHER">
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Apply -->
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="applyDateFilter()">
+
+        Apply
+
+      </button>
+
+
+      <!-- Clear -->
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="clearFilters()">
+
+        Clear
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAYMENT TABLE
+    ====================================================== -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Receipt
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Amount
+            </th>
+
+            <th>
+              Mode
+            </th>
+
+            <th>
+              Reference
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let row of paymentData">
+
+            <!-- Date -->
+
+            <td>
+              {{ formatDate(row.payment_date) }}
+            </td>
+
+
+            <!-- Receipt -->
+
+            <td>
+
+              <span class="receipt-number">
+
+                {{ row.receipt_number || '-' }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Student -->
+
+            <td>
+
+              <strong>
+                {{ row.student_code }}
+              </strong>
+
+              <small>
+                {{ row.student_name }}
+              </small>
+
+            </td>
+
+
+            <!-- Amount -->
+
+            <td>
+
+              <strong class="amount">
+
+                ₹{{ formatAmount(row.amount) }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- Mode -->
+
+            <td>
+
+              <span
+                class="payment-mode"
+                [ngClass]="getPaymentModeClass(row.payment_mode)">
+
+                {{ row.payment_mode }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Reference -->
+
+            <td>
+
+              {{ row.reference_number || '-' }}
+
+            </td>
+
+          </tr>
+
+
+          <!-- Empty -->
+
+          <tr
+            *ngIf="paymentData.length === 0">
+
+            <td
+              colspan="6"
+              class="empty">
+
+              No payment records found.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

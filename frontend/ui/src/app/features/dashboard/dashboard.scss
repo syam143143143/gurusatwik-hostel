@@ -1,0 +1,535 @@
+.dashboard-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+
+  h1 {
+    margin: 0;
+
+    font-size: 25px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  p {
+    margin: 5px 0 0;
+
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+
+.refresh-btn {
+  border: none;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 16px;
+
+  border-radius: 7px;
+
+  background: #2563eb;
+  color: white;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  span {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+.stat-card {
+  min-height: 130px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 19px;
+
+  box-sizing: border-box;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 5px 15px rgba(0, 0, 0, 0.07);
+  }
+}
+
+
+.stat-content {
+  min-width: 0;
+}
+
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+
+  margin-bottom: 9px;
+}
+
+
+.stat-value {
+  font-size: 27px;
+  line-height: 1;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  white-space: nowrap;
+}
+
+
+.stat-value.money {
+  font-size: 23px;
+}
+
+
+.stat-description {
+  margin-top: 9px;
+
+  font-size: 10px;
+
+  color: #9ca3af;
+}
+
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 18px;
+}
+
+
+.students-icon {
+  background: #eff6ff;
+}
+
+.rooms-icon {
+  background: #f0fdf4;
+}
+
+.beds-icon {
+  background: #fff7ed;
+}
+
+.occupied-icon {
+  background: #fef2f2;
+}
+
+.available-icon {
+  background: #ecfdf5;
+}
+
+.fee-icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.collection-icon {
+  background: #ecfdf5;
+}
+
+.pending-icon {
+  background: #fff7ed;
+}
+
+
+.pending-card {
+  border-left: 3px solid #f59e0b;
+}
+
+
+/* =========================
+   BOTTOM PANELS
+========================= */
+
+.dashboard-bottom {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+
+  margin-top: 16px;
+}
+
+
+.dashboard-panel {
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+
+.panel-header {
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #111827;
+  }
+
+  p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+    color: #9ca3af;
+  }
+}
+
+
+/* =========================
+   OCCUPANCY
+========================= */
+
+.occupancy-section {
+  width: 100%;
+}
+
+
+.occupancy-numbers {
+  display: flex;
+
+  align-items: center;
+
+  gap: 45px;
+
+  margin-bottom: 18px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+
+.occupancy-value {
+  font-size: 22px;
+
+  font-weight: 700;
+
+  color: #111827;
+}
+
+
+.occupancy-label {
+  font-size: 10px;
+
+  color: #9ca3af;
+}
+
+
+.progress-bar {
+  width: 100%;
+
+  height: 8px;
+
+  overflow: hidden;
+
+  background: #e5e7eb;
+
+  border-radius: 10px;
+}
+
+
+.progress-value {
+  height: 100%;
+
+  background: #2563eb;
+
+  border-radius: 10px;
+
+  transition: width 0.5s ease;
+}
+
+
+.occupancy-percentage {
+  margin-top: 8px;
+
+  text-align: right;
+
+  font-size: 10px;
+
+  color: #6b7280;
+}
+
+
+/* =========================
+   FEE SUMMARY
+========================= */
+
+.fee-summary {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0;
+}
+
+
+.fee-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  font-size: 12px;
+
+  color: #6b7280;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  strong {
+    color: #111827;
+
+    font-size: 13px;
+  }
+}
+
+
+.pending-row {
+  strong {
+    color: #dc2626;
+  }
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-container {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+
+.loader {
+  width: 28px;
+  height: 28px;
+
+  border: 3px solid #e5e7eb;
+
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-container {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 18px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  color: #991b1b;
+
+  .error-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fee2e2;
+
+    font-weight: 700;
+  }
+
+  strong {
+    font-size: 12px;
+  }
+
+  p {
+    margin: 3px 0 0;
+
+    font-size: 11px;
+  }
+
+  button {
+    margin-left: auto;
+
+    border: 1px solid #fca5a5;
+
+    background: white;
+
+    color: #991b1b;
+
+    border-radius: 6px;
+
+    padding: 7px 12px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+  }
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 800px) {
+
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .page-header {
+    align-items: flex-start;
+    gap: 15px;
+
+    h1 {
+      font-size: 21px;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    min-height: 115px;
+  }
+
+  .dashboard-panel {
+    padding: 16px;
+  }
+}

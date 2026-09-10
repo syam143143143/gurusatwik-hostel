@@ -1,0 +1,273 @@
+.app-header {
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 64px;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 22px;
+
+  box-sizing: border-box;
+
+  background: white;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================
+   LEFT
+========================================== */
+
+.header-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+/* ==========================================
+   MENU
+========================================== */
+
+.menu-button {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #374151;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+
+/* ==========================================
+   BRAND
+========================================== */
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+.brand-name {
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.brand-subtitle {
+  margin-top: 2px;
+
+  font-size: 10px;
+
+  color: #9ca3af;
+}
+
+
+/* ==========================================
+   RIGHT
+========================================== */
+
+.header-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+
+/* ==========================================
+   NOTIFICATION
+========================================== */
+
+.notification-button {
+  position: relative;
+
+  width: 38px;
+
+  height: 38px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.notification-dot {
+  position: absolute;
+
+  top: 7px;
+
+  right: 7px;
+
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #ef4444;
+
+  border: 2px solid white;
+}
+
+
+/* ==========================================
+   USER
+========================================== */
+
+.user-profile {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 36px;
+
+  height: 36px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-weight: 700;
+
+  font-size: 13px;
+}
+
+.user-details {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  strong {
+    font-size: 12px;
+
+    color: #1f2937;
+  }
+
+  span {
+    font-size: 10px;
+
+    color: #9ca3af;
+  }
+}
+
+.dropdown-icon {
+  font-size: 9px;
+
+  color: #9ca3af;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+  .app-header {
+    padding: 0 12px;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .user-details,
+  .dropdown-icon {
+    display: none;
+  }
+
+  .header-right {
+    gap: 5px;
+  }
+}

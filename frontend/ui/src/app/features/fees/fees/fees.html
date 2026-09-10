@@ -1,0 +1,797 @@
+<div class="fees-page">
+
+  <!-- =========================================================
+       PAGE HEADER
+  ========================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+
+        Hostel Management
+
+        <span>/</span>
+
+        Fees
+
+      </div>
+
+      <h1>
+        Fees
+      </h1>
+
+      <p>
+        Manage monthly hostel fees, payments and pending amounts.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="refresh()"
+      [disabled]="loading || generating">
+
+      <span>↻</span>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       SUCCESS MESSAGE
+  ========================================================== -->
+
+  <div
+    class="message success"
+    *ngIf="successMessage">
+
+    <span class="message-icon">
+      ✓
+    </span>
+
+    <span class="message-text">
+      {{ successMessage }}
+    </span>
+
+    <button
+      type="button"
+      class="message-close"
+      (click)="successMessage = ''">
+
+      ×
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       ERROR MESSAGE
+  ========================================================== -->
+
+  <div
+    class="message error"
+    *ngIf="errorMessage">
+
+    <span class="message-icon">
+      !
+    </span>
+
+    <span class="message-text">
+      {{ errorMessage }}
+    </span>
+
+    <button
+      type="button"
+      class="message-close"
+      (click)="errorMessage = ''">
+
+      ×
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       SUMMARY CARDS
+  ========================================================== -->
+
+  <div class="summary-grid">
+
+    <!-- Total Fee -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon fee-icon">
+        ₹
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Total Fees
+        </span>
+
+        <strong>
+          ₹{{ totalFee | number:'1.0-2' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Paid -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon paid-icon">
+        ✓
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Total Paid
+        </span>
+
+        <strong>
+          ₹{{ totalPaid | number:'1.0-2' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pending -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon pending-icon">
+        !
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Total Pending
+        </span>
+
+        <strong>
+          ₹{{ totalPending | number:'1.0-2' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Students -->
+
+    <div class="summary-card">
+
+      <div class="summary-icon student-icon">
+        👨‍🎓
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Students
+        </span>
+
+        <strong>
+          {{ totalStudents }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       GENERATE MONTHLY FEES
+  ========================================================== -->
+
+  <section class="generate-card">
+
+    <div class="generate-content">
+
+      <div class="generate-icon">
+        📅
+      </div>
+
+      <div>
+
+        <h2>
+          Generate Monthly Fees
+        </h2>
+
+        <p>
+          Generate hostel fee records for all active students
+          who have an active room allocation.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="generate-actions">
+
+      <div class="month-input">
+
+        <label for="feeMonth">
+          Fee Month
+        </label>
+
+        <input
+          id="feeMonth"
+          type="month"
+          [(ngModel)]="feeMonth"
+          [disabled]="generating">
+
+      </div>
+
+
+      <button
+        type="button"
+        class="generate-button"
+        (click)="generateMonthlyFees()"
+        [disabled]="generating || !feeMonth">
+
+        <span *ngIf="!generating">
+          Generate Fees
+        </span>
+
+        <span *ngIf="generating">
+          Generating...
+        </span>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       LEDGER CARD
+  ========================================================== -->
+
+  <section class="ledger-card">
+
+    <!-- =======================================================
+         HEADER
+    ======================================================== -->
+
+    <div class="ledger-header">
+
+      <div>
+
+        <h2>
+          Student Fee Ledger
+        </h2>
+
+        <p>
+          View monthly fees, payments and outstanding balances.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =======================================================
+         FILTERS
+    ======================================================== -->
+
+    <div class="filters">
+
+      <!-- Search -->
+
+      <div class="filter-group search-group">
+
+        <label>
+          Search
+        </label>
+
+        <div class="search-box">
+
+          <span>
+            🔍
+          </span>
+
+          <input
+            type="text"
+            [value]="searchText"
+            (input)="onSearch($event)"
+            placeholder="Search student code or name">
+
+        </div>
+
+      </div>
+
+
+      <!-- Month -->
+
+      <div class="filter-group">
+
+        <label>
+          Month
+        </label>
+
+        <input
+          type="month"
+          [value]="selectedMonth"
+          (change)="onMonthChange($event)">
+
+      </div>
+
+
+      <!-- Status -->
+
+      <div class="filter-group">
+
+        <label>
+          Status
+        </label>
+
+        <select
+          [value]="selectedStatus"
+          (change)="onStatusChange($event)">
+
+          <option value="ALL">
+            All Status
+          </option>
+
+          <option value="PENDING">
+            Pending
+          </option>
+
+          <option value="PARTIAL">
+            Partial
+          </option>
+
+          <option value="PAID">
+            Paid
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Clear -->
+
+      <div class="filter-group filter-button-group">
+
+        <label>
+          &nbsp;
+        </label>
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="clearFilters()">
+
+          Clear Filters
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =======================================================
+         STATUS SUMMARY
+    ======================================================== -->
+
+    <div class="status-summary">
+
+      <div class="status-summary-item">
+
+        <span class="dot pending"></span>
+
+        <span>
+          Pending
+        </span>
+
+        <strong>
+          {{ pendingCount }}
+        </strong>
+
+      </div>
+
+
+      <div class="status-summary-item">
+
+        <span class="dot partial"></span>
+
+        <span>
+          Partial
+        </span>
+
+        <strong>
+          {{ partialCount }}
+        </strong>
+
+      </div>
+
+
+      <div class="status-summary-item">
+
+        <span class="dot paid"></span>
+
+        <span>
+          Paid
+        </span>
+
+        <strong>
+          {{ paidCount }}
+        </strong>
+
+      </div>
+
+
+      <div class="status-summary-item">
+
+        <span>
+          Students with Pending
+        </span>
+
+        <strong>
+          {{ pendingStudents }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- =======================================================
+         LOADING
+    ======================================================== -->
+
+    <div
+      class="loading-state"
+      *ngIf="loading">
+
+      <div class="loader"></div>
+
+      <p>
+        Loading fee records...
+      </p>
+
+    </div>
+
+
+    <!-- =======================================================
+         EMPTY
+    ======================================================== -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        filteredFees.length === 0
+      ">
+
+      <div class="empty-icon">
+        ₹
+      </div>
+
+      <h3>
+        No fee records found
+      </h3>
+
+      <p>
+        Try changing your filters or generate monthly fees.
+      </p>
+
+    </div>
+
+
+    <!-- =======================================================
+         TABLE
+    ======================================================== -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !loading &&
+        filteredFees.length > 0
+      ">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Fee Month
+            </th>
+
+            <th>
+              Hostel Fee
+            </th>
+
+            <th>
+              Other Charges
+            </th>
+
+            <th>
+              Total
+            </th>
+
+            <th>
+              Paid
+            </th>
+
+            <th>
+              Pending
+            </th>
+
+            <th>
+              Due Date
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let fee of filteredFees
+            ">
+
+            <!-- Student -->
+
+            <td>
+
+              <div class="student-cell">
+
+                <strong>
+                  {{ fee.student_code }}
+                </strong>
+
+                <span>
+                  {{ fee.student_name }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- Fee Month -->
+
+            <td>
+
+              <span class="month-value">
+
+                {{ fee.fee_month | date:'MMM yyyy' }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Hostel Fee -->
+
+            <td>
+
+              ₹{{ fee.hostel_fee | number:'1.0-2' }}
+
+            </td>
+
+
+            <!-- Other Charges -->
+
+            <td>
+
+              <div class="charges-cell">
+
+                <span
+                  *ngIf="fee.mess_fee > 0">
+
+                  Mess ₹{{ fee.mess_fee | number:'1.0-2' }}
+
+                </span>
+
+                <span
+                  *ngIf="fee.electricity_fee > 0">
+
+                  Electricity ₹{{ fee.electricity_fee | number:'1.0-2' }}
+
+                </span>
+
+                <span
+                  *ngIf="fee.maintenance_fee > 0">
+
+                  Maintenance ₹{{ fee.maintenance_fee | number:'1.0-2' }}
+
+                </span>
+
+                <span
+                  *ngIf="fee.other_fee > 0">
+
+                  Other ₹{{ fee.other_fee | number:'1.0-2' }}
+
+                </span>
+
+                <span
+                  class="no-charge"
+                  *ngIf="
+                    fee.mess_fee === 0 &&
+                    fee.electricity_fee === 0 &&
+                    fee.maintenance_fee === 0 &&
+                    fee.other_fee === 0
+                  ">
+
+                  —
+
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- Total -->
+
+            <td>
+
+              <strong class="amount-total">
+
+                ₹{{ fee.total_amount | number:'1.0-2' }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- Paid -->
+
+            <td>
+
+              <span class="amount-paid">
+
+                ₹{{ fee.paid_amount | number:'1.0-2' }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Pending -->
+
+            <td>
+
+              <strong
+                class="amount-pending"
+                [class.zero]="
+                  fee.pending_amount === 0
+                ">
+
+                ₹{{ fee.pending_amount | number:'1.0-2' }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- Due Date -->
+
+            <td>
+
+              {{ fee.due_date | date:'dd-MM-yyyy' }}
+
+            </td>
+
+
+            <!-- Status -->
+
+            <td>
+
+              <span
+                class="status"
+                [ngClass]="
+                  getStatusClass(fee.status)
+                ">
+
+                {{ fee.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Action -->
+
+            <td>
+
+              <button
+                type="button"
+                class="payment-button"
+                (click)="collectPayment(fee)"
+                [disabled]="
+                  fee.pending_amount <= 0
+                "
+                [title]="
+                  fee.pending_amount <= 0
+                    ? 'No pending amount'
+                    : 'Collect payment'
+                ">
+
+                <span>
+                  ₹
+                </span>
+
+                Pay
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- =======================================================
+         FOOTER
+    ======================================================== -->
+
+    <div
+      class="ledger-footer"
+      *ngIf="
+        !loading &&
+        filteredFees.length > 0
+      ">
+
+      Showing
+
+      <strong>
+        {{ filteredFees.length }}
+      </strong>
+
+      fee record(s)
+
+    </div>
+
+  </section>
+
+</div>
